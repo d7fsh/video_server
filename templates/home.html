@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script type="text/javascript">
+        window.onload = function(){
+            $("#testbtn").click(function (e) {
+                e.preventDefault();
+
+                sendRequest(function (res,err) {
+                    if (err != "") {
+                        console.log("error = ",err)
+                    }else{
+                        console.log("res = ",res)
+                    }
+                })
+            });
+        };
+
+        function sendRequest(callback) {
+            var dat = {
+                "id":"10000",x
+                "author_id":1,
+                "name":"wang"
+            };
+            $.ajax({
+                url: 'http://localhost:8080/user/ben',
+                type: 'post',
+                data: JSON.stringify(dat),
+                statusCode: {
+                    500: function () {
+                        callback(null, "internal error");
+                    }
+                },
+                complete: function (xhr, textStatus) {
+                    if (xhr.status >= 400) {
+                        callback(null, "Error");
+                        return;
+                    }
+                }
+            }).done(function (data, statusText, xhr) {
+                if (xhr.status >= 400) {
+                    callback(null, "Error");
+                    return;
+                }
+                callback(data, null);
+            });
+        }
+    </script>
+    <body>
+        <button id="testbtn" type="submit">测试</button>
+    </body>
+</html>
