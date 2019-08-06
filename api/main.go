@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
@@ -37,11 +36,6 @@ func (m middleWareHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request
 	// 3.2 原有功能, 原有处理请求功能
 	m.router.ServeHTTP(resp, req)
 
-}
-
-//检测session
-func validateUserSession(req *http.Request) {
-	fmt.Println("validateUserSession被调用")
 }
 
 func RegisterHandler() *httprouter.Router {
