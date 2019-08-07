@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"video_server/api/defs"
+	"video_server/api/session"
+	"video_server/api/user"
 )
 
 func CreateUser(resp http.ResponseWriter, req *http.Request, ps httprouter.Params) {
@@ -22,7 +24,24 @@ func CreateUser(resp http.ResponseWriter, req *http.Request, ps httprouter.Param
 		return
 	}
 	// 2. 将获取数据插入数据库
+	if err := user.AddUser(ubody.UserName, ubody.Pwd); err != nil {
+		// 2.1 告知用户操作数据库的时候出现错误
+		sendErrorResponse(resp, defs.ErrorDBError)
+		return
+	}
 	// 3. 针对当前的登录用户生成session
+	sessionId := session.GenerateNewSessionId(ubody.UserName)
+	// 3.1 记录此sessionId指向的用户, 处于登录状态
+	su := &defs.SignedUp{true, sessionId}
+
+	if res, err := json.Marshal(su); err != nil {
+		sendErrorResponse(resp, defs.ErrorInternalFaults)
+		return
+	} else {
+		// 4. 完整的完成登录流程, 告知用户注册成功
+
+	}
+
 }
 
 func HandlerOriginalTest(resp http.ResponseWriter, req *http.Request, ps httprouter.Params) {
