@@ -42,5 +42,6 @@ func RegisterHandler() *httprouter.Router {
 	router := httprouter.New()
 	//router.POST("/", CreateUser)
 	router.GET("/test", HandlerOriginalTest)
+	router.GET("/test/:user_name", HandlerRestFullTest)
 	return router
 }

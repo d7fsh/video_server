@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/julienschmidt/httprouter"
+	"io"
 	"net/http"
 )
 
@@ -17,4 +18,10 @@ func HandlerOriginalTest(resp http.ResponseWriter, req *http.Request, ps httprou
 	name := query.Get("user_name")
 	pwd := query.Get("pwd")
 	fmt.Printf("name = %s, pwd = %s\n", name, pwd)
+}
+
+func HandlerRestFullTest(resp http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	uname := ps.ByName("user_name")
+	fmt.Printf("userName = %s\n", uname)
+	io.WriteString(resp, uname)
 }
