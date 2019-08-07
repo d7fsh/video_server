@@ -23,13 +23,13 @@ func NewMiddleWareHandler(r *httprouter.Router) http.Handler {
 	return m
 }
 
-//2. 提供一个实现了httpHandler接口的结构体
+//2. 提供一个实现了http.Handler接口的结构体
 type middleWareHandler struct {
 	// 2.1 在中间件中保留原有的功能, 原有功能是存储在router
 	router *httprouter.Router
 }
 
-// 3. 让middleWareHandler实现ServeHttp方法
+// 3. 让middleWareHandler实现ServeHttp方法(重写ServerHTTP方法, 添加新功能)
 func (m middleWareHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	// 3.1 增强功能, 检测session是否存在
 	validateUserSession(req)
@@ -41,5 +41,6 @@ func (m middleWareHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request
 func RegisterHandler() *httprouter.Router {
 	router := httprouter.New()
 	//router.POST("/", CreateUser)
+	router.GET("/test", HandlerOriginalTest)
 	return router
 }
