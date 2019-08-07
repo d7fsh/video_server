@@ -40,8 +40,12 @@ func (m middleWareHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request
 
 func RegisterHandler() *httprouter.Router {
 	router := httprouter.New()
-	//router.POST("/", CreateUser)
+
 	router.GET("/test", HandlerOriginalTest)
 	router.GET("/test/:user_name", HandlerRestFullTest)
+
+	router.POST("/", CreateUser)
 	return router
 }
+
+
