@@ -2,8 +2,10 @@ package dbops
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"lottery_project/conf"
 )
 
 var (
@@ -12,9 +14,16 @@ var (
 )
 
 func init() {
-	dbConn, err = sql.Open("mysql", "root:MyNewPass4!@tcp(127.0.0.1:3306)/video_server?charset=utf8&parseTime=true&loc=Local")
+	sourceName := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true&loc=Local",
+		conf.DBMaster.Host,
+		conf.DBMaster.Pwd,
+		conf.DBMaster.Host,
+		conf.DBMaster.Port,
+		conf.DBMaster.Database)
+
+	dbConn, err = sql.Open(conf.DriverName, sourceName)
 	if err != nil {
-		log.Println("mysql conn err: ", err)
+		log.Println("创建数据库连接失败, 请检查: ", err)
 		return
 	}
 	//defer dbConn.Close()

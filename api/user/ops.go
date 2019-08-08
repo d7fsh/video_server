@@ -1,6 +1,8 @@
 package user
 
-import "video_server/api/dbops"
+import (
+	"video_server/api/dbops"
+)
 
 func DeleteUser(loginName, pwd string) error {
 	err := dbops.DeleteUser(loginName, pwd)

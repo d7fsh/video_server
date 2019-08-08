@@ -2,6 +2,7 @@ package demo
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"testing"
 )
@@ -11,7 +12,7 @@ import (
 // 3. 方法中必须传递t *testing.T
 func TestDBConnection(t *testing.T) {
 	// 1. 尝试连接数据库
-	dbConn, err := sql.Open("mysql", "root:MyNewPass4!@tcp(127.0.0.1:3306)/video_server?charset=utf8&parseTime=true&loc=Local")
+	dbConn, err := sql.Open("mysql", "root:I&My_Dog7@tcp(127.0.0.1:3306)/video_server?charset=utf8&parseTime=true&loc=Local")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -19,5 +20,15 @@ func TestDBConnection(t *testing.T) {
 	err = dbConn.Ping()
 	if err != nil {
 		panic(err.Error())
+	}
+	stmt, err := dbConn.Prepare("INSERT INTO users (login_name,pwd) VALUES (?,?);")
+	defer stmt.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
+	//3，判断插入结果
+	_, err = stmt.Exec("tom", "12345")
+	if err != nil {
+		fmt.Println(err)
 	}
 }
